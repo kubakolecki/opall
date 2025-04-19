@@ -1,0 +1,13 @@
+{
+    "dependencies": [
+	{
+	    "name": "ceres",
+	    "features": [
+		"suitesparse"
+	    ]
+	},
+	{
+	    "name": "eigen3"
+	}
+    ]
+}
