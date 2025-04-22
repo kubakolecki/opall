@@ -32,6 +32,7 @@ CommandLineParameters::CommandLineParameters(const std::string_view &appName) : 
     parameters["measurements"s].needs = {"config"s, "output"s};
     parameters["poses"s].needs = {"measurements"s, "output"s, "config"s};
     parameters["output"s].needs = {"measurements"s, "config"s};
+    parameters["overwrite"s].needs = {"measurements"s, "output"s, "config"s};
 }
 
 void CommandLineParameters::parseParameters(int argc, char **argv)
@@ -206,10 +207,11 @@ int CommandLineParameters::countParametersThatAreMissingValue() const noexcept
 
 bool CommandLineParameters::areMutualRequirementsFullfilled() const noexcept
 {
-    const auto hasValue = [](const auto &p) { return p.value.has_value(); };
+    // const auto hasValue = [](const auto& p) { return (p.value.has_value() || !p.needsValue); };
     const auto needsOther = [](const auto &p) { return !p.needs.empty(); };
+    const auto wasLoaded = [&](const auto &p) { return namesOfLoadedParameters.contains(p.name); };
 
-    auto givenParametersThatNeedOthers = parameters | std::views::values | std::views::filter(hasValue) | std::views::filter(needsOther);
+    auto givenParametersThatNeedOthers = parameters | std::views::values | std::views::filter(wasLoaded) | std::views::filter(needsOther);
 
     bool requirementsAreFullfilled{true};
     for (const auto &parameterInNeed : std::move(givenParametersThatNeedOthers))

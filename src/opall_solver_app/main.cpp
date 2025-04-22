@@ -3,12 +3,12 @@
 #include "ReportData.hpp"
 #include "input_output.hpp"
 
+#include <opall/IncrementalAlignment.hpp>
 #include <opall/OptimizationDataContainer.hpp>
 #include <opall/Problem.hpp>
 #include <opall/cost_function_data_creator.hpp>
 #include <opall/fill_problem.hpp>
 #include <opall/optimization_data_processor.hpp>
-#include <opall/IncrementalAlignment.hpp>
 #include <opall/residual_computation.hpp>
 
 #include <filesystem>
@@ -26,11 +26,6 @@ void printIncrementalAlignmentStatus(const opall::IncrementalAlignmentStatus &st
 int main(int argc, char **argv)
 {
     opall_solver_app::CommandLineParameters commandLineParameters{appName};
-
-    // for (int i = 0; i < argc; i++)
-    //{
-    //     std::print("{}\n", argv[i]);
-    // }
 
     try
     {
@@ -73,9 +68,8 @@ int main(int argc, char **argv)
             optimizationDataContainer, config.modellingConfig, opall::cost_function_data::ObservedPointIn3DStrategy{})};
         std::print("adding const functions to the problem:\n");
 
-        opall::fillProblem(
-            costFunctionDataContainer,
-            optimizationProblem); // TODO: move fill problem free function to Problem.cpp file and get rid of fill_problem files.
+        opall::fillProblem(costFunctionDataContainer,
+                           optimizationProblem); // TODO: move fill problem free function to Problem.cpp file and get rid of fill_problem files.
         std::print("solving ceres problem:\n");
         const auto solverSummary{optimizationProblem.solve(config.optimizationConfig)};
 
