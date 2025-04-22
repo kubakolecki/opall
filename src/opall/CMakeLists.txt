@@ -49,8 +49,6 @@ include/uncertainty_conversion.hpp
 include/create_ceres_solver_options.hpp
 )
 
-target_include_directories(opall PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/opall )
-
 source_group("cost_function_data" FILES
 include/opall/cost_function_data/CostFunctionData.hpp
 include/opall/cost_function_data/ObservedPointIn3DCostFunctionData.hpp
@@ -103,14 +101,30 @@ include/opall/optimization_data_processor.hpp
 include/opall/evaluators.hpp
 )
 
+target_include_directories(opall PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>)
+
 target_compile_definitions(opall PRIVATE 
     LIB_VERSION_MAJOR=${PROJECT_VERSION_MAJOR}
     LIB_VERSION_MINOR=${PROJECT_VERSION_MINOR}
     LIB_VERSION_PATCH=${PROJECT_VERSION_PATCH}
 )
 
-target_include_directories(opall PUBLIC include)
-
 include(GNUInstallDirs)
-install(TARGETS opall FILE_SET HEADERS DESTINATION include PUBLIC_HEADER EXCLUDE_FROM_ALL)
+install(TARGETS opall EXPORT opallTargets FILE_SET HEADERS DESTINATION include PUBLIC_HEADER EXCLUDE_FROM_ALL)
 #used EXCLUDE_FROM_ALL not to copy public headers twice to include destination
+
+install(EXPORT opallTargets DESTINATION ${CMAKE_INSTALL_LIBDIR}/opall/cmake NAMESPACE opall::
+)
+
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(
+    "${CMAKE_CURRENT_LIST_DIR}/cmake/opallConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/opallConfig.cmake"
+    INSTALL_DESTINATION lib/cmake/opall
+)
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/opallConfig.cmake" DESTINATION lib/opall/cmake
+)
+
+
