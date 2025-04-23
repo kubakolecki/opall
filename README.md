@@ -34,7 +34,7 @@ git clone https://github.com/kubakolecki/opall.git
 
 ### Setting up the CMake build environment
 - So far you should have your top level `opall` directory and the cloned source directory `opall` inside. Next to source directory create and empty
-build directory named 'opall_build'. Now in your top level `opall` directory you should have two dirctories: source directory `opall` and an empty build directory `opall_build`.
+build directory named 'opall_build' (we will refer to this directory as build directory or build folder). Now in your top level `opall` directory you should have two dirctories: source directory `opall` and an empty build directory `opall_build`.
 
 - In Windows Power Shell enter to the source direcotry `opall` and execute the configuration script for vcpack:
 ```bash
@@ -69,11 +69,20 @@ cmake --preset=default
 CMake configuration when run first time may take longer time because vcpack needs to download all dependencies like Ceres Solver, Eigen, Suit Sparse.
 If no errors are reported you should have Visual Studio solution file created in `opall_build` directory. All dependencies are installed in `opall_build\vcpkg_installed` folder.
 ### Building opall
-- Open solution file in Visual Studio.
+- Open solution file `opall.sln` in Visual Studio.
 - Double check if in the main Visual Studio toolbar Release mode is enabled!
 - In the solution explorer in `CMakePredefinedTargets` right click on BUILD_ALL project and build it.
 This should compile and link opall library and opall_app. Hopefully no errors will occure.
 - After successfull build, the binaries are available in `opall_build/bin`.
+### Checking if build wokrs
+- In Windows Power Shell navigate to `opall_build\bin\opall_solver_app\Release`.
+- Display information about the version of opall_solver_app:
+```bash
+.\opall_solver_app -v
+```
+- Information about the version should be displayd.
+### Running on test data
+
 ### Installing opall
 This step is not required unless you want to use opall in your own C++ project. You may need to have run the Windows Power Shell as an admin. To install opall library and opall_app in Windows Power Shell navigate to the top level `opall` direcotry.
 Install the binaries:
@@ -81,5 +90,6 @@ Install the binaries:
 cmake --install .\opall_build\
 ```
 CMake will install the binnaries as welll as CMake config files for using opall library in you future C++ projects.
+### Using in your own project
 ## Linux Configuration and Build
 ### Will be added soon
