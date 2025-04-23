@@ -1,3 +1,7 @@
 build_project.bat
 configure_environment.ps1
 CMakeUserPresets.json
+sample_data/simulation_01/solver_output/*
+!sample_data/simulation_01/solver_output/.gitkeep
+sample_data/simulation_02/solver_output/*
+!sample_data/simulation_02/solver_output/.gitkeep
