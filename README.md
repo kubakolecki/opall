@@ -3,12 +3,12 @@
 ### Prerequisites
 To build opall in Windows you will need:
 - Microsoft Visual Studio compatible with C++23. This build was tested with Microsoft Visual Studio Community 2022 17.12.4.
-- Windows Power Shell shoud be available on your PC.
+- Windows Power Shell should be available on your PC.
 - Git Bash or other GitHub client.
 - CMake version at least 3.23. This build instructions were tested with CMake 3.31.2.
-- vcpack (see next section on instruciton how to install)
+- vcpack (see next section on instruction how to install)
 ### vcpack setup
-vcpack is a package manager maintained by Microsoft. In provides easy instatalation of C++ 3rd party dependencies. Installing vcpack makes installing 3rd party libraries much easier than building them from scratch.
+vcpack is a package manager maintained by Microsoft. In provides easy installation of C++ 3rd party dependencies. Installing vcpack makes installing 3rd party libraries much easier than building them from scratch.
 To install vcpack see [instructions](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-powershell) or just execute following few steps:
 - Fist clone vcpack to some top directory in your PC (can be something like D:/MyC++Tools or whatever whit not an extremally long path):
   
@@ -16,7 +16,7 @@ To install vcpack see [instructions](https://learn.microsoft.com/en-us/vcpkg/get
 git clone https://github.com/microsoft/vcpkg.git
 ```
   
-- In Widnows Power Shell navigate to main vcpack directory, and run the bootstrap script:
+- In Windows Power Shell navigate to main vcpack directory, and run the bootstrap script:
 
 ```bash
 cd vcpkg
@@ -27,24 +27,24 @@ cd vcpkg
 That's it - vcpack is installed on your machine.
   
 ### Cloning the repository
-Create directory named `opall`. Navigate to the `opall` diretory and clone repository: In Git Bash run:
+Create directory named `opall`. Navigate to the `opall` directory and clone repository: In Git Bash run:
 ```bash
 git clone https://github.com/kubakolecki/opall.git
 ```
 
 ### Setting up the CMake and vcpack build environment
 - So far you should have your top level `opall` directory and the cloned source directory `opall` inside. Next to the source directory create and empty
-build directory named 'opall_build' (we will refer to this directory as build directory or build folder). Now in your top level `opall` directory you should have two dirctories: source directory `opall` and an empty build directory `opall_build`.
+build directory named 'opall_build' (we will refer to this directory as build directory or build folder). Now in your top level `opall` directory you should have two directories: source directory `opall` and an empty build directory `opall_build`.
 
 - Inside the source directory `opall` create Windows Power Shell script file named `configure_environment.ps1`. Add the following content to the script:
 ```bash
 "configuring vcpkg environment ..."
-$env:VCPKG_ROOT = location/where/my/vcpkg/is/isntalled"
+$env:VCPKG_ROOT = location/where/my/vcpkg/is/installed"
 $env:PATH = "$env:VCPKG_ROOT;$env:PATH"
 vcpkg.exe integrate install
 "configuration done"
 ```
-Replace the `location/where/my/vcpkg/is/isntalled` with the path pointing to the directory where you isntalled vcpack i.e. the directory where `vcpkg.exe` file is located.
+Replace the `location/where/my/vcpkg/is/installed` with the path pointing to the directory where you installed vcpack i.e. the directory where `vcpkg.exe` file is located.
 
 - In Windows Power Shell navigate to the source directory and execute `configure_environment.ps1` script:
 
@@ -64,16 +64,16 @@ Add the following content to the newly created `CMakeUserPresets.json` file:
         "name": "default",
         "inherits": "vcpkg",
         "environment": {
-          "VCPKG_ROOT": "location/where/my/vcpkg/is/isntalled"
+          "VCPKG_ROOT": "location/where/my/vcpkg/is/installed"
         }
       }
     ]
   }
 ```
-- Replace the `location/where/my/vcpkg/is/isntalled` with the path pointing to the directory where you isntalled vcpack i.e. the directory where `vcpkg.exe` file is located.
+- Replace the `location/where/my/vcpkg/is/installed` with the path pointing to the directory where you installed vcpack i.e. the directory where `vcpkg.exe` file is located.
 
 ### Generating Visual Studio Solution
-In Windows Power Shell navigate to the `opall` source direcotry and generate the solution in CMake, using the following command:
+In Windows Power Shell navigate to the `opall` source directory and generate the solution in CMake, using the following command:
 ```bash
 cmake --preset=default
 ```
@@ -83,9 +83,9 @@ If no errors are reported you should have Visual Studio solution file created in
 - Open solution file `opall.sln` in Visual Studio.
 - Double check if in the main Visual Studio toolbar Release mode is enabled!
 - In the solution explorer in `CMakePredefinedTargets` right click on BUILD_ALL project and build it.
-This should compile and link opall library and opall_app. Hopefully no errors will occure.
-- After successfull build, the binaries are available in `opall_build/bin`.
-### Checking if build wokrs
+This should compile and link opall library and opall_app. Hopefully no errors will occur.
+- After successful build, the binaries are available in `opall_build/bin`.
+### Checking if build works
 - In Windows Power Shell navigate to `opall_build\bin\opall_solver_app\Release`.
 - Display information about the version of opall_solver_app:
 ```bash
@@ -113,5 +113,13 @@ cmake --install .\opall_build\
 ```
 CMake will install the binnaries as welll as CMake config files for using opall library in you future C++ projects.
 ### Using in your own project
+When building your project with CMake you shuold be able to find opall package by adding `find_package` command in your 'CMakeLists.txt' file. For example:
+```cmake
+cmake_minimum_required(VERSION 3.30.0)
+project(my_project)
+find_package(opall REQUIRED)
+```
+
+
 ## Linux Configuration and Build
 ### Will be added soon
