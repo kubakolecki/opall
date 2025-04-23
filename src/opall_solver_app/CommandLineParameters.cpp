@@ -126,8 +126,7 @@ void CommandLineParameters::printHelp() const noexcept
     const auto longNameWidht{getWidhtOfTheLongestLongPrompt()};
     for (const auto &param : std::views::elements<1>(vectOfParams))
     {
-        std::print("{:>{}}, {:>3}, {}, {} This parameter is {}.\n", param.longPrompt, longNameWidht + 2, param.shortPrompt, param.name,
-                   param.description, getObligatoryStr(param.isObligatory));
+        std::print("{:>{}}, {:>3}, {}, {}\n", param.longPrompt, longNameWidht + 2, param.shortPrompt, param.name, param.description);
     }
 }
 
@@ -173,7 +172,7 @@ std::string CommandLineParameters::getObligatoryStr(bool obligatory) const noexc
 {
     if (obligatory)
     {
-        return "obligatory"s;
+        return "mandatory"s;
     }
     else
     {
