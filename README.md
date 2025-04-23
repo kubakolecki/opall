@@ -2,15 +2,14 @@
 ## Windows Configuration and Build
 ### Prerequisites
 To build opall in Windows you will need:
-- Microsoft Visual Studio compatible with C++23. This build was tested with Microsoft Visual Studio Community 2022 17.12.4.
+- Microsoft Visual Studio compatible with C++23. This build was tested with Microsoft Visual Studio Community 2022 v. 17.12.4.
 - Windows Power Shell should be available on your PC.
 - Git Bash or other GitHub client.
-- CMake version at least 3.23. This build instructions were tested with CMake 3.31.2.
+- CMake version at least 3.23. These build instructions were tested with CMake 3.31.2.
 - vcpack (see next section on instruction how to install)
 ### vcpack setup
-vcpack is a package manager maintained by Microsoft. In provides easy installation of C++ 3rd party dependencies. Installing vcpack makes installing 3rd party libraries much easier than building them from scratch.
-To install vcpack see [instructions](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-powershell) or just execute following few steps:
-- Fist clone vcpack to some top directory in your PC (can be something like D:/MyC++Tools or whatever whit not an extremally long path):
+vcpack is a package manager maintained by Microsoft. It provides easy installation of C++ 3rd party dependencies. Installing vcpack makes installing 3rd party libraries much easier than building them from scratch in Windows. To install vcpack see [instructions](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-powershell) or just execute following few steps:
+- Fist clone vcpack to some top directory in your PC (can be something like D:/MyC++Tools or whatever with not an extremally long path):
   
 ```bash
 git clone https://github.com/microsoft/vcpkg.git
@@ -19,22 +18,19 @@ git clone https://github.com/microsoft/vcpkg.git
 - In Windows Power Shell navigate to main vcpack directory, and run the bootstrap script:
 
 ```bash
-cd vcpkg
-```
-```bash
 .\bootstrap-vcpkg.bat
 ```
 That's it - vcpack is installed on your machine.
   
 ### Cloning the repository
-Create directory named `opall`. Navigate to the `opall` directory and clone repository: In Git Bash run:
+Somewhere in your hard drive, where you have read/write access, create directory named `opall`. Navigate to the `opall` directory and clone repository: In Git Bash run:
 ```bash
 git clone https://github.com/kubakolecki/opall.git
 ```
 
 ### Setting up the CMake and vcpack build environment
 - So far you should have your top level `opall` directory and the cloned source directory `opall` inside. Next to the source directory create and empty
-build directory named 'opall_build' (we will refer to this directory as build directory or build folder). Now in your top level `opall` directory you should have two directories: source directory `opall` and an empty build directory `opall_build`.
+build directory named 'opall_build' (we will refer to this directory as build directory or build folder). **Now in your top level `opall` directory you should have two directories: source directory `opall` and an empty build directory `opall_build`**.
 
 - Inside the source directory `opall` create Windows Power Shell script file named `configure_environment.ps1`. Add the following content to the script:
 ```bash
@@ -81,7 +77,7 @@ CMake configuration when run first time may take longer time because vcpack need
 If no errors are reported you should have Visual Studio solution file created in `opall_build` directory. All dependencies are installed in `opall_build\vcpkg_installed` folder.
 ### Building opall
 - Open solution file `opall.sln` in Visual Studio.
-- Double check if in the main Visual Studio toolbar Release mode is enabled!
+- **Double check if in the main Visual Studio toolbar Release mode is enabled!**
 - In the solution explorer in `CMakePredefinedTargets` right click on BUILD_ALL project and build it.
 This should compile and link opall library and opall_app. Hopefully no errors will occur.
 - After successful build, the binaries are available in `opall_build/bin`.
