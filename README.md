@@ -1,4 +1,6 @@
-# Building
+# About opall
+
+# Building library and apps
 ## Windows Configuration and Build
 ### Prerequisites
 To build opall in Windows you will need:
@@ -101,6 +103,7 @@ This should compile and link opall library and opall_app. Hopefully no errors wi
 .\opall_build\bin\opall_solver_app\Release\opall_solver_app -m .\opall\sample_data\simulation_02\solver_input\lidar_measurements.txt -c .\opall\sample_data\simulation_02\solver_config.cfg -o .\opall\sample_data\simulation_02\solver_output -r
 ```
 - Now you should see that the optimization was computed several times, once per each pose incrementally added to the optimization problem plus additional optimization at the end. The report file should be created in the `solver_output` directory.
+- See [opall_solver_app CLI](https://github.com/kubakolecki/opall/edit/main/README.md#opall_solver_app-cli) for more details about running Opall Solver App.
 ### Installing opall
 This step is not required unless you want to use opall in your own C++ project. You may need to have run the Windows Power Shell as an admin. To install opall library and opall_app in Windows Power Shell navigate to the top level `opall` direcotry.
 Install the binaries:
@@ -116,6 +119,22 @@ project(my_project)
 find_package(opall REQUIRED)
 ```
 
-
 ## Linux Configuration and Build
 ### Will be added soon
+
+# opall_solver_app CLI
+To get infomration about Opall Solver App Command Line Interface run opall_solver_app with `-h` or `--help` argument. You should see the output like this:
+```
+          --help,  -h, help, Prints out help.
+       --version,  -v, version, Prints out app version.
+        --config,  -c, config, Path to config file.
+  --measurements,  -m, measurements, Path to file with point measurements.
+         --poses,  -p, poses, Path to file with approximated poses. If not provided the app will try to solve the alignment sequentially.
+        --output,  -o, output, Path to the directory with app output.
+     --overwrite,  -r, overwrite, Explicitly allows to overwrite existing data in the output direcory.
+```
+In general there are 3 arguments that are mandatory: `--config`, `--measurements` and `--output`. They specify the path to config file, path to measurement file and path to an output folder.
+- Config file provides basic configuration of optimization problem setup and solver options. See exemplary config files in the sample data sets.
+- Measurements file contains 3D point (landmark) measurements. See exemplary files in the sample data sets.
+- Output folder shows the location of the directoy where the app output is written.
+- If you use specify poses the solver will use them as the initial guesses for the solver.
