@@ -32,11 +32,22 @@ Create directory named `opall`. Navigate to the `opall` diretory and clone repos
 git clone https://github.com/kubakolecki/opall.git
 ```
 
-### Setting up the CMake build environment
-- So far you should have your top level `opall` directory and the cloned source directory `opall` inside. Next to source directory create and empty
+### Setting up the CMake and vcpack build environment
+- So far you should have your top level `opall` directory and the cloned source directory `opall` inside. Next to the source directory create and empty
 build directory named 'opall_build' (we will refer to this directory as build directory or build folder). Now in your top level `opall` directory you should have two dirctories: source directory `opall` and an empty build directory `opall_build`.
 
-- In Windows Power Shell enter to the source direcotry `opall` and execute the configuration script for vcpack:
+- Inside the source directory `opall` create Windows Power Shell script file named `configure_environment.ps1`. Add the following content to the script:
+```bash
+"configuring vcpkg environment ..."
+$env:VCPKG_ROOT = location/where/my/vcpkg/is/isntalled"
+$env:PATH = "$env:VCPKG_ROOT;$env:PATH"
+vcpkg.exe integrate install
+"configuration done"
+```
+Replace the `location/where/my/vcpkg/is/isntalled` with the path pointing to the directory where you isntalled vcpack i.e. the directory where `vcpkg.exe` file is located.
+
+- In Windows Power Shell navigate to the source directory and execute `configure_environment.ps1` script:
+
 ```bash
 .\configure_environment.ps1
 ```
