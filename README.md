@@ -92,8 +92,19 @@ This should compile and link opall library and opall_app. Hopefully no errors wi
 .\opall_solver_app -v
 ```
 - Information about the version should be displayd.
-### Running on test data
-
+### Running on the sample data
+- In Windows Power Shell navigate to the top level `opall` directory.
+- Run the opall_solver_app on the first data sample:
+```bash
+ .\opall_build\bin\opall_solver_app\Release\opall_solver_app -p .\opall\sample_data\simulation_01\solver_input\poses.txt -m .\opall\sample_data\simulation_01\solver_input\lidar_measurements.txt -c .\opall\sample_data\simulation_01\solver_config.cfg -o .\opall\sample_data\simulation_01\solver_output -r
+```
+- Hopefully you should have the Ceres Solver output printed on the screen. The report file should be created in the `solver_output` directory specified as the '-o' command line argument.
+- In this example opall was used to optimize poses given their initial guesses, provided in the `poses.txt` file given as the `-p` command line argument.
+- If no initial guess is provided, i.e. the `-p` command line argument is skipped, opall_solver_app will try to align poses incrementally. To achieve this the app will fix the coordinate system of the first point cloud, so the first pose given won't be optimized. Let's try this with second sample data set:
+```bash
+.\opall_build\bin\opall_solver_app\Release\opall_solver_app -m .\opall\sample_data\simulation_02\solver_input\lidar_measurements.txt -c .\opall\sample_data\simulation_02\solver_config.cfg -o .\opall\sample_data\simulation_02\solver_output -r
+```
+- Now you should see that the optimization was computed several times, once per each pose incrementally added to the optimization problem plus additional optimization at the end. The report file should be created in the `solver_output` directory.
 ### Installing opall
 This step is not required unless you want to use opall in your own C++ project. You may need to have run the Windows Power Shell as an admin. To install opall library and opall_app in Windows Power Shell navigate to the top level `opall` direcotry.
 Install the binaries:
