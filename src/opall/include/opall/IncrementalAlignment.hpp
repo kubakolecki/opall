@@ -7,6 +7,7 @@
 #include <Eigen/Core>
 
 #include <set>
+#include <list>
 
 // #include <vector>
 

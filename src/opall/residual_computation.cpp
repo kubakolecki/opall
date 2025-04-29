@@ -6,7 +6,7 @@
 
 namespace opall
 {
-ResidualContainer opall::computeResiduals(const cost_function_data::CostFunctionDataContainer &costFunctionData)
+ResidualContainer computeResiduals(const cost_function_data::CostFunctionDataContainer &costFunctionData)
 {
     ResidualContainer residuals;
     residuals.reserve(costFunctionData.getData().size());
