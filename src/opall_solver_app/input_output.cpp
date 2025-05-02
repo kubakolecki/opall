@@ -324,4 +324,24 @@ void opall_solver_app::printReport(const std::filesystem::path pathToFile, const
     file << "Optimized poses:\n";
     file << "poseId,x,y,z,qw,qx,qy,qz\n";
     printPoses(reportData.getOptimizationDataContainer().posesContainer, file, ',');
+
+    if (reportConfig.printResiduals && reportData.getResiduals().has_value())
+    {
+        file << "Residuals:\n";
+        printResiduals(reportData.getResiduals().value().get(), file, ',');
+    }
+}
+
+void opall_solver_app::printResiduals(const opall::ResidualContainer &residualContainer, std::ostream &outputStream, char separator)
+{
+    for (const auto& [constFunctionIdentifier, evaluationResult]: residualContainer)
+    {
+        outputStream << constFunctionIdentifier.name;
+        const auto numOfResiduals{evaluationResult.values.rows() };
+        for (auto i{0}; i<numOfResiduals; ++i)
+        {
+            outputStream << separator << evaluationResult.values(i);
+        }
+        outputStream <<"\n";
+    }
 }

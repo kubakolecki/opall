@@ -79,6 +79,7 @@ int main(int argc, char **argv)
         {
             std::print("computing residuals:\n");
             residuals = opall::computeResiduals(costFunctionDataContainer);
+            std::print("residuals has value: {}\n",residuals.has_value());
         }
 
         opall_solver_app::ReportData reportData{optimizationDataContainer, solverSummary, residuals};

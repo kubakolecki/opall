@@ -5,6 +5,7 @@
 #include <ranges>
 #include <set>
 #include <sstream>
+#include <algorithm>
 // #include <iostream> //TODO: remove if/when not needed
 
 // TODO: consider refactoring this class so it can be re-used in other apps using opall solver. Consider moving it to library.

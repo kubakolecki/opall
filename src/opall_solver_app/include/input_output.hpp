@@ -22,5 +22,6 @@ void printPoints(const opall::PointContainer &points, std::ostream &outputStream
 std::string poseAsString(const opall::Pose &pose, char separator);
 void printPoses(const opall::PosesContainer &poses, std::ostream &outputStream, char separator);
 void printReport(const std::filesystem::path pathToFile, const ReportData &reportData, const ReportConfig &reportConfig);
+void printResiduals(const opall::ResidualContainer& residualContainer, std::ostream &outputStream, char separator);
 
 } // namespace opall_solver_app

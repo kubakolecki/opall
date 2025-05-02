@@ -3,7 +3,7 @@
 opall_solver_app::ReportData::ReportData(const opall::optimization_data_container::OptimizationDataContainer &optimizationDataContainer,
                                          const opall::SolverSummary &solverSummary,
                                          std::optional<std::reference_wrapper<const opall::ResidualContainer>> residuals = std::nullopt)
-    : m_optimizationDataContainer(optimizationDataContainer), m_solverSummary(solverSummary)
+    : m_optimizationDataContainer(optimizationDataContainer), m_solverSummary(solverSummary), m_residuals(residuals)
 {
 }
 

@@ -5,6 +5,7 @@
 #include <print>
 #include <ranges>
 #include <system_error>
+#include <vector>
 
 using namespace std::literals;
 using namespace std::string_literals;
@@ -38,7 +39,15 @@ CommandLineParameters::CommandLineParameters(const std::string_view &appName) : 
 void CommandLineParameters::parseParameters(int argc, char **argv)
 {
     clear();
-    const std::vector<std::string_view> args(argv + 1, argv + argc);
+    //const std::vector<std::string_view> args(argv + 1, argv + argc); //this does not compile in gcc
+
+    std::vector<std::string_view> args;
+    for (int i = 1; i < argc; ++i) 
+    {
+        args.emplace_back(argv[i]);
+    }
+
+
     if (args.size() < getMinNumberOfEntries())
     {
         throw std::runtime_error("Not enough command line arguments! "s + helpSuggestion);
