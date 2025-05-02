@@ -121,7 +121,7 @@ find_package(opall REQUIRED)
 
 ## Linux Configuration and Build
 
-### Prerequesites
+### Prerequisites
 - Git.
 - CMake version at least 3.23. These build instructions were tested with CMake 3.31.2.
 - gcc(g++) compiler. I used gcc version 14.2.0. So far build was not tested with Clang.
@@ -129,7 +129,7 @@ find_package(opall REQUIRED)
 ### Installing Ceres Solver and its dependencies
 First you need to install Ceres Solver and its dependencies as described in [Ceres Solver Installation](http://ceres-solver.org/installation.html#linux).
 
-### Clonning the repository
+### Cloning the repository
 Somewhere in your hard drive, where you have read/write access, create directory named `opall`. Navigate to the `opall` directory and clone repository: In Git Bash run:
 ```bash
 git clone https://github.com/kubakolecki/opall.git
@@ -140,13 +140,13 @@ git clone https://github.com/kubakolecki/opall.git
 ```bash
 cmake -B opall_build -S opall -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O0"
 ```
-The cmake build environment is now configured. As you see we are configuring with `-DCMAKE_CXX_FLAGS_RELEASE="-O0"` flag, which means lowest level of compiler optimization. In g++ I got wrong results while builing with `-O1` or higher. This is not the case when building with Visual Studio.
+The cmake build environment is now configured. As you see we are configuring with `-DCMAKE_CXX_FLAGS_RELEASE="-O0"` flag, which means lowest level of compiler optimization. In g++ I got wrong results while building with `-O1` or higher. This is not the case when building with Visual Studio.
 
 - Build the binaries:
 ```bash
 cmake --build opall_build -j 4
 ```
-Hopefully no errors should occure.
+Hopefully no errors should occur.
 
 - Similarly as after Windows build you can now test the binaries using sample data. Navigate to the top level `opall` directory.
   
