@@ -103,7 +103,7 @@ This should compile and link opall library and opall_app. Hopefully no errors wi
 .\opall_build\bin\opall_solver_app\Release\opall_solver_app -m .\opall\sample_data\simulation_02\solver_input\lidar_measurements.txt -c .\opall\sample_data\simulation_02\solver_config.cfg -o .\opall\sample_data\simulation_02\solver_output -r
 ```
 - Now you should see that the optimization was computed several times, once per each pose incrementally added to the optimization problem plus additional optimization at the end. The report file should be created in the `solver_output` directory.
-- See [opall_solver_app CLI](https://github.com/kubakolecki/opall/edit/main/README.md#opall_solver_app-cli) for more details about running Opall Solver App.
+- See [opall_solver_app CLI](https://github.com/kubakolecki/opall/tree/main?tab=readme-ov-file#opall_solver_app-cli) for more details about running Opall Solver App.
 ### Installing opall
 This step is not required unless you want to use opall in your own C++ project. You may need to have run the Windows Power Shell as an admin. To install opall library and opall_app in Windows Power Shell navigate to the top level `opall` direcotry.
 Install the binaries:
