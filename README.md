@@ -120,7 +120,46 @@ find_package(opall REQUIRED)
 ```
 
 ## Linux Configuration and Build
-### Will be added soon
+
+### Prerequesites
+- Git.
+- CMake version at least 3.23. These build instructions were tested with CMake 3.31.2.
+- gcc(g++) compiler. I used gcc version 14.2.0. So far build was not tested with Clang.
+
+### Installing Ceres Solver and its dependencies
+First you need to install Ceres Solver and its dependencies as described in [Ceres Solver Installation](http://ceres-solver.org/installation.html#linux).
+
+### Clonning the repository
+Somewhere in your hard drive, where you have read/write access, create directory named `opall`. Navigate to the `opall` directory and clone repository: In Git Bash run:
+```bash
+git clone https://github.com/kubakolecki/opall.git
+```
+### Building opall
+- You should have the top level directory `opall` that contains source directory `opall` with the cloned source code. Next to the source directory `opall` create build directory named `opall_build`.
+- In top level directory `opall` run project configuration:
+```bash
+cmake -B opall_build -S opall -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O0"
+```
+The cmake build environment is now configured. As you see we are configuring with `-DCMAKE_CXX_FLAGS_RELEASE="-O0"` flag, which means lowest level of compiler optimization. In g++ I got wrong results while builing with `-O1` or higher. This is not the case when building with Visual Studio.
+
+- Build the binaries:
+```bash
+cmake --build opall_build -j 4
+```
+Hopefully no errors should occure.
+
+- Similarly as after Windows build you can now test the binaries using sample data. Navigate to the top level `opall` directory.
+  
+dataset 1:
+```bash
+ ./opall_build/bin/opall_solver_app/opall_solver_app -p ./opall/sample_data/simulation_01/solver_input/poses.txt -m ./opall/sample_data/simulation_01/solver_input/lidar_measurements.txt -c ./opall/sample_data/simulation_01/solver_config.cfg -o ./opall/sample_data/simulation_01/solver_output -r
+```
+dataset 2:
+```bash
+./opall_build/bin/opall_solver_app/opall_solver_app -m ./opall/sample_data/simulation_02/solver_input/lidar_measurements.txt -c ./opall/sample_data/simulation_02/solver_config.cfg -o ./opall/sample_data/simulation_02/solver_output -r
+```
+
+See description in Windows build for more information about sample datasets.
 
 # opall_solver_app CLI
 To get infomration about Opall Solver App Command Line Interface run opall_solver_app with `-h` or `--help` argument. You should see the output like this:
