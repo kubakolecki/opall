@@ -1,3 +1,4 @@
+![My Image](images/logo.svg)
 # About opall
 
 # Building library and apps
