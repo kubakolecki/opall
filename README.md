@@ -1,7 +1,21 @@
 ![My Image](images/logo.svg)
 # About opall
 
-# Building library and apps
+Opall is a simple C++23 implementation of alignment of point clouds given point-to-point correspondences. Opall uses Ceres Solver under the hood.
+While there are many implementations of an alignment of 2 point clouds, using algorithms like Umeyama or Horn, opall focuses on the alignment of many point clouds in one optimization process (global batch alignment).
+For example see the situation in the drawing below, where we have 4 scanning stations and point (landmark) measurements given for each of them. Each point is co-visible from 2 stations at least.
+
+![My Image](images/graph_1.svg)
+
+Opall assumes that exactly one station should be fixed in the optimization process. This is required to fix the position and rotation ambiguity. User can specify approximated poses of aligned scans or let the opall find the initial guesses. In the later case the first pose will be fixed for optimization. Opall is a simple "vanilla style" optimizer. For each landmark it adds "observed point" cost functors to the Ceres problem. For each cost functor the rotation of the scan station is parametrized as a unit quaternion (so called S3 Lie group), while position belongs to R3. Opall assumes the observations are outlier free. Opall does not perform any RANSAC-like tests before solving optimization. However, you can choose any loss function available in Ceres to suppress the influence of inaccurate measurements on the final solution.
+
+There is no detailed documentation available (yet). Please see the input files provided as exemplary data.
+
+This repository provides:
+- opall: static library
+- opall_solver_app: application that uses pall internaly.
+
+# Building library and app
 ## Windows Configuration and Build
 ### Prerequisites
 To build opall in Windows you will need:
