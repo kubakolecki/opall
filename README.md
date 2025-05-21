@@ -26,7 +26,7 @@ To build opall in Windows you will need:
 - vcpack (see next section on instruction how to install)
 ### vcpack setup
 vcpack is a package manager maintained by Microsoft. It provides easy installation of C++ 3rd party dependencies. Installing vcpack makes installing 3rd party libraries much easier than building them from scratch in Windows. To install vcpack see [instructions](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-powershell) or just execute following few steps:
-- Fist clone vcpack to some top directory in your PC (can be something like D:/MyC++Tools or whatever with not an extremally long path):
+- First clone vcpack to some top directory in your PC (can be something like D:/MyC++Tools or whatever with not an extremally long path):
   
 ```bash
 git clone https://github.com/microsoft/vcpkg.git
