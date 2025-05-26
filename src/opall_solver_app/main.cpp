@@ -10,10 +10,12 @@
 #include <opall/fill_problem.hpp>
 #include <opall/optimization_data_processor.hpp>
 #include <opall/residual_computation.hpp>
+#include <opall/full_covariance_computation.hpp>
 
 #include <filesystem>
 #include <fstream>
 #include <print>
+#include <chrono> //temporary for profiling
 
 using namespace std::literals;
 
@@ -86,6 +88,34 @@ int main(int argc, char **argv)
         opall_solver_app::printReport(std::filesystem::path(commandLineParameters.getValueOrEmptyString("output"s)) /
                                           std::filesystem::path("report.txt"s),
                                       reportData, config.reportConfig);
+
+        const auto jacobianData {optimizationProblem.getJacobian()};
+        
+        Eigen::SparseMatrix<double> sparseJacobian{jacobianData.numberOfRows, jacobianData.numberOfColumns};
+        sparseJacobian.setFromTriplets(jacobianData.triplets.begin(), jacobianData.triplets.end());
+
+        opall_solver_app::printMatrix(std::filesystem::path(commandLineParameters.getValueOrEmptyString("output"s)) /
+                                          std::filesystem::path("jacobian.txt"s), sparseJacobian, 2);
+
+        sparseJacobian.makeCompressed();
+        Eigen::SparseMatrix<double>  hessian {sparseJacobian.transpose()*sparseJacobian};
+
+
+        opall_solver_app::printMatrix(std::filesystem::path(commandLineParameters.getValueOrEmptyString("output"s)) /
+                                          std::filesystem::path("hessian.txt"s), hessian, 2);
+
+
+        const auto timeStart {std::chrono::high_resolution_clock::now()};                                        
+        const Eigen::MatrixXd covariance = opall::covariance::computeFullCovariance(jacobianData, opall::covariance::computeUsingNaiveMatrixInversion);
+        const auto timeEnd  {std::chrono::high_resolution_clock::now()};
+        std::chrono::duration<double, std::milli> duration {timeEnd - timeStart};
+        std::print("duration of covariance matrix computation [ms]: {}\n", duration);
+
+
+        
+        opall_solver_app::printMatrix(std::filesystem::path(commandLineParameters.getValueOrEmptyString("output"s)) /
+                                          std::filesystem::path("covariance.txt"s), covariance, 2);
+
     }
     catch (std::exception e)
     {

@@ -345,3 +345,54 @@ void opall_solver_app::printResiduals(const opall::ResidualContainer &residualCo
         outputStream <<"\n";
     }
 }
+
+//void opall_solver_app::printMatrix(const std::filesystem::path pathToFile, const Eigen::SparseMatrix<double>& matrix, int precision)
+//{
+//    std::ofstream file{pathToFile};
+//
+//    const auto rows{matrix.rows()};
+//    const auto cols{matrix.cols()};
+//
+//    file << std::scientific << std::setprecision(precision);
+//    for (auto r{0}; r<rows; ++r)
+//    {
+//        for(auto c{0}; c<cols; ++c)
+//        {
+//            file << matrix.coeff(r,c);
+//            if (c == cols-1)
+//            {
+//                file <<'\n';
+//            }
+//            else
+//            {
+//                file <<',';
+//            }
+//        }
+//    }  
+//}
+//
+//void opall_solver_app::printMatrix(const std::filesystem::path pathToFile, const Eigen::MatrixXd& matrix, int precision)
+//{
+//    std::ofstream file{pathToFile};
+//
+//    const auto rows{matrix.rows()};
+//    const auto cols{matrix.cols()};
+//
+//    file << std::scientific << std::setprecision(precision);
+//    for (auto r{0}; r<rows; ++r)
+//    {
+//        for(auto c{0}; c<cols; ++c)
+//        {
+//            file << matrix.coeff(r,c);
+//            if (c == cols-1)
+//            {
+//                file <<'\n';
+//            }
+//            else
+//            {
+//                file <<',';
+//            }
+//        }
+//    }  
+//
+//}

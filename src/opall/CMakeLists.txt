@@ -14,10 +14,12 @@ evaluators.cpp
 geometry.cpp
 residual_computation.cpp
 fill_problem.cpp
+full_covariance_computation.cpp
 include/opall/data_types.hpp
 include/opall/Problem.hpp
 include/opall/SolverSummary.hpp
 include/opall/CostFunctionIdentifier.hpp
+include/opall/SparseJacobianData.hpp
 include/opall/cost_function_data/CostFunctionData.hpp
 include/opall/cost_function_data/ObservedPointIn3DCostFunctionData.hpp
 include/opall/cost_function_data/ObservedPointIn3DFixedStationCostFunctionData.hpp
@@ -27,6 +29,7 @@ include/opall/cost_function_data/PointToPointFixedStationCostFunctionData.hpp
 include/opall/geometry.hpp
 include/opall/residual_computation.hpp
 include/opall/fill_problem.hpp
+include/opall/full_covariance_computation.hpp
 
 include/opall/OptimizationDataContainer.hpp
 include/opall/OptimizationConfig.hpp

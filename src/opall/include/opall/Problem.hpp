@@ -1,11 +1,16 @@
 #pragma once
 
-#include <memory>
-
 #include "opall/OptimizationConfig.hpp"
 #include "opall/SolverSummary.hpp"
+#include "opall/SparseJacobianData.hpp"
 #include "opall/cost_function_data/ObservedPointIn3DCostFunctionData.hpp"
 #include "opall/cost_function_data/ObservedPointIn3DFixedStationCostFunctionData.hpp"
+
+
+
+#include <memory>
+
+
 
 namespace opall
 {
@@ -26,6 +31,7 @@ class Problem
     void insertCostFunctionToProblem(const cost_function_data::ObservedPointIn3DCostFunctionData &costFunctionData);
 
     opall::SolverSummary solve(const OptimizationConfig &config = OptimizationConfig{});
+    opall::SparseJacobianData getJacobian();
 
   private:
     struct Impl;

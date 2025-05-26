@@ -9,6 +9,8 @@
 #include <ceres/manifold.h>
 #include <ceres/problem.h>
 
+#include <Eigen/Sparse>
+
 #include <print>
 #include <unordered_map>
 #include <variant>
@@ -19,6 +21,7 @@ class opall::Problem::Impl
     void insertToProblem(const cost_function_data::ObservedPointIn3DFixedStationCostFunctionData &costFunctionData);
     void insertToProblem(const cost_function_data::ObservedPointIn3DCostFunctionData &costFunctionData);
     opall::SolverSummary solve(const OptimizationConfig &config);
+    opall::SparseJacobianData getJacobian();
 
   private:
     template <class... Ts>
@@ -81,6 +84,35 @@ opall::SolverSummary opall::Problem::Impl::solve(const OptimizationConfig &confi
 
     const auto solverSummary{createSolverSummary(ceresSummary)};
     return solverSummary;
+}
+
+opall::SparseJacobianData opall::Problem::Impl::getJacobian()
+{
+    ceres::CRSMatrix jacobian;
+    auto evaluateOptions {ceres::Problem::EvaluateOptions{}};
+    evaluateOptions.apply_loss_function = false;
+    ceresProblem.Evaluate(evaluateOptions, nullptr, nullptr, nullptr, &jacobian);
+
+
+    SparseJacobianData jacobianData;
+    jacobianData.numberOfColumns = jacobian.num_cols;
+    jacobianData.numberOfRows = jacobian.num_rows;
+    jacobianData.triplets.reserve(jacobian.values.size());
+
+    for (auto row {0}; row < jacobian.num_rows; ++row) 
+    {
+        auto start {jacobian.rows[row]};
+        auto end {jacobian.rows[row + 1]};
+        for (auto idx{start}; idx < end; ++idx) 
+        {
+            auto col {jacobian.cols[idx]};
+            double val {jacobian.values[idx]};
+            jacobianData.triplets.emplace_back(row, col, val);
+        }
+    }
+
+    return jacobianData;
+
 }
 
 ceres::Solver::Options opall::Problem::Impl::createCeresSolverOptions(const OptimizationConfig &config)
@@ -168,4 +200,9 @@ opall::SolverSummary opall::Problem::solve(const OptimizationConfig &config)
 {
     const auto solverSummary{pimpl->solve(config)};
     return solverSummary;
+}
+
+opall::SparseJacobianData opall::Problem::getJacobian()
+{
+    return pimpl->getJacobian();
 }
