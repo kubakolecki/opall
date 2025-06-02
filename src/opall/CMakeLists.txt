@@ -15,11 +15,13 @@ geometry.cpp
 residual_computation.cpp
 fill_problem.cpp
 full_covariance_computation.cpp
+block_covariance_computation.cpp
 include/opall/data_types.hpp
 include/opall/Problem.hpp
 include/opall/SolverSummary.hpp
 include/opall/CostFunctionIdentifier.hpp
 include/opall/SparseJacobianData.hpp
+include/opall/ParameterBlockData.hpp
 include/opall/cost_function_data/CostFunctionData.hpp
 include/opall/cost_function_data/ObservedPointIn3DCostFunctionData.hpp
 include/opall/cost_function_data/ObservedPointIn3DFixedStationCostFunctionData.hpp
@@ -30,6 +32,7 @@ include/opall/geometry.hpp
 include/opall/residual_computation.hpp
 include/opall/fill_problem.hpp
 include/opall/full_covariance_computation.hpp
+include/opall/block_covariance_computation.hpp
 
 include/opall/OptimizationDataContainer.hpp
 include/opall/OptimizationConfig.hpp
@@ -68,7 +71,7 @@ include/cost_functors/PointToPointFixedStationCostFunctor.hpp
 )
 
 set_target_properties(opall PROPERTIES PUBLIC_HEADER 
-"include/opall/data_types.hpp;include/opall/Problem.hpp;include/opall/SolverSummary.hpp;include/opall/CostFunctionIdentifier.hpp;include/opall/cost_function_data/CostFunctionData.hpp;include/opall/cost_function_data/ObservedPointIn3DCostFunctionData.hpp;include/opall/cost_function_data/ObservedPointIn3DFixedStationCostFunctionData.hpp;include/opall/cost_function_data/PointToPointCostFunctionData.hpp;include/opall/cost_function_data/PointToPointFixedStationCostFunctionData.hpp;include/opall/geometry.hpp;include/opall/residual_computation.hpp;include/opall/fill_problem.hpp;include/opall/OptimizationDataContainer.hpp;include/opall/OptimizationConfig.hpp;include/opall/IncrementalAlignment.hpp;include/opall/ModellingConfig.hpp;include/opall/CostFunctionDataContainer.hpp;include/opall/LossFunctionDescription.hpp;include/opall/cost_function_data_creator.hpp;include/opall/cost_function_data_id_generator.hpp;include/opall/optimization_data_processor.hpp;include/opall/evaluators.hpp")
+"include/opall/data_types.hpp;include/opall/Problem.hpp;include/opall/SolverSummary.hpp;include/opall/CostFunctionIdentifier.hpp;include/opall/cost_function_data/CostFunctionData.hpp;include/opall/cost_function_data/ObservedPointIn3DCostFunctionData.hpp;include/opall/cost_function_data/ObservedPointIn3DFixedStationCostFunctionData.hpp;include/opall/cost_function_data/PointToPointCostFunctionData.hpp;include/opall/cost_function_data/PointToPointFixedStationCostFunctionData.hpp;include/opall/geometry.hpp;include/opall/residual_computation.hpp;include/opall/fill_problem.hpp;include/opall/OptimizationDataContainer.hpp;include/opall/OptimizationConfig.hpp;include/opall/IncrementalAlignment.hpp;include/opall/ModellingConfig.hpp;include/opall/CostFunctionDataContainer.hpp;include/opall/LossFunctionDescription.hpp;include/opall/cost_function_data_creator.hpp;include/opall/cost_function_data_id_generator.hpp;include/opall/optimization_data_processor.hpp;include/opall/evaluators.hpp;include/opall/full_covariance_computation.hpp;include/opall/block_covariance_computation.hpp")
 
 set_property(TARGET opall PROPERTY CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

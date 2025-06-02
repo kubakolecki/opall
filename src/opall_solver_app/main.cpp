@@ -11,11 +11,13 @@
 #include <opall/optimization_data_processor.hpp>
 #include <opall/residual_computation.hpp>
 #include <opall/full_covariance_computation.hpp>
+#include <opall/block_covariance_computation.hpp>
 
 #include <filesystem>
 #include <fstream>
 #include <print>
 #include <chrono> //temporary for profiling
+#include <iostream>
 
 using namespace std::literals;
 
@@ -108,9 +110,92 @@ int main(int argc, char **argv)
         const auto timeStart {std::chrono::high_resolution_clock::now()};                                        
         const Eigen::MatrixXd covariance = opall::covariance::computeFullCovariance(jacobianData, opall::covariance::computeUsingNaiveMatrixInversion);
         const auto timeEnd  {std::chrono::high_resolution_clock::now()};
+        
         std::chrono::duration<double, std::milli> duration {timeEnd - timeStart};
         std::print("duration of covariance matrix computation [ms]: {}\n", duration);
 
+        const auto parameterBlockDataContainer{optimizationProblem.getParameterBlockData()};
+
+        //std::print("parameter block data:\n");
+        //for (const auto& blockData: parameterBlockData.data)
+        //{
+        //    std::print("{} {} {}\n", static_cast<const void*>(blockData.address), blockData.position, blockData.size);
+        //}
+
+        //checking if addresses of poses are there:
+        
+        opall::covariance::BlockMatrixDataContainer covarianceSubmatricesData;
+
+        for (const auto&[poseId, pose]:  optimizationDataContainer.posesContainer)
+        {
+            if (pose.type == opall::Pose::Type::FIXED)
+            {
+                continue;
+            }
+
+            const auto paramBlockDataIt = std::ranges::find_if(parameterBlockDataContainer.data, [&](const auto& parameterBlockData){return pose.position.data() == parameterBlockData.address; }  );
+
+            std::print("searching for parameter block data of pose {}\n", poseId);
+            if (paramBlockDataIt == parameterBlockDataContainer.data.end() )
+            {
+                std::print("parameter block data not found\n");
+            }
+            else
+            {
+                std::print("Found following parameter block data:\n");
+                std::print("{} {} {}\n", static_cast<const void*>((*paramBlockDataIt).address), (*paramBlockDataIt).position, (*paramBlockDataIt).size);
+                covarianceSubmatricesData.addData((*paramBlockDataIt).position, (*paramBlockDataIt).position, (*paramBlockDataIt).size, (*paramBlockDataIt).size );
+            }
+        }
+
+        const auto covarianceMatricesForPosition = opall::covariance::getSubmatrices(covarianceSubmatricesData, covariance);
+
+        std::cout <<"covariance matrices from full covariance:\n";
+        for (const auto& covMatrix: covarianceMatricesForPosition)
+        {
+            std::cout <<"covariance matrix:\n";
+            if (covMatrix.has_value() )
+            {
+                std::cout << covMatrix.value() << "\n";
+            }
+        }
+
+        opall::Problem::CovarianceBlockData covarianceBlockData;
+        covarianceBlockData.parameterBlockAddresses.reserve(optimizationDataContainer.posesContainer.size());
+        covarianceBlockData.parameterBlockSizes.reserve(optimizationDataContainer.posesContainer.size());
+        for (const auto&[poseId, pose]:  optimizationDataContainer.posesContainer)
+        {
+            if (pose.type == opall::Pose::Type::FIXED)
+            {
+                continue;
+            }
+            covarianceBlockData.parameterBlockAddresses.emplace_back(pose.position.data(),pose.position.data());
+            covarianceBlockData.parameterBlockSizes.emplace_back(3,3);
+            covarianceBlockData.parameterBlockAddresses.emplace_back(pose.quaternionWxyz.data(), pose.quaternionWxyz.data());
+            covarianceBlockData.parameterBlockSizes.emplace_back(3,3);
+
+        }
+
+        const auto timeStartCovProblem {std::chrono::high_resolution_clock::now()};
+        const auto covarianceDataComputedFromProblem = optimizationProblem.computeCovarianceMatrices(covarianceBlockData);
+        const auto timeEndCovProblem {std::chrono::high_resolution_clock::now()};
+
+        std::chrono::duration<double, std::milli> durationCovProblem {timeEndCovProblem - timeStartCovProblem};
+        std::print("duration of covariance matrix computation [ms]: {}\n", durationCovProblem);
+
+        std::cout <<"covariance matrices from full problem object:\n";
+        if (covarianceDataComputedFromProblem.has_value())
+        {     
+            for (const auto& covMatrix : covarianceDataComputedFromProblem.value())
+            {
+                std::cout <<"covariance matrix:\n";
+                std::cout << covMatrix <<"\n";
+            }
+        }
+        else
+        {
+            std::print("Covariance computation using problem object failed.");
+        }
 
         
         opall_solver_app::printMatrix(std::filesystem::path(commandLineParameters.getValueOrEmptyString("output"s)) /
