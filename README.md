@@ -173,7 +173,14 @@ dataset 2:
 ```bash
 ./opall_build/bin/opall_solver_app/opall_solver_app -m ./opall/sample_data/simulation_02/solver_input/lidar_measurements.txt -c ./opall/sample_data/simulation_02/solver_config.cfg -o ./opall/sample_data/simulation_02/solver_output -r
 ```
-
+dataset 3:
+```bash
+./opall_build/bin/opall_solver_app/opall_solver_app -m ./opall/sample_data/simulation_03/solver_input/lidar_measurements.txt -c ./opall/sample_data/simulation_03/solver_config.cfg -o ./opall/sample_data/simulation_03/solver_output -r
+```
+dataset 4:
+```bash
+./opall_build/bin/opall_solver_app/opall_solver_app -m ./opall/sample_data/simulation_04/solver_input/lidar_measurements.txt -c ./opall/sample_data/simulation_04/solver_config.cfg -o ./opall/sample_data/simulation_04/solver_output -r
+```
 See description in Windows build for more information about sample datasets.
 
 # opall_solver_app CLI
