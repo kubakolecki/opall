@@ -114,6 +114,44 @@ int main(int argc, char **argv)
         std::chrono::duration<double, std::milli> duration {timeEnd - timeStart};
         std::print("duration of covariance matrix computation [ms]: {}\n", duration);
 
+        opall::SparseJacobianData sandboxData;
+
+        sandboxData.numberOfColumns = 4;
+        sandboxData.numberOfRows = 6;
+
+        sandboxData.triplets.push_back({0,0,1.0});
+        sandboxData.triplets.push_back({1,0,1.0});
+        sandboxData.triplets.push_back({2,0,1.0});
+        sandboxData.triplets.push_back({3,0,1.0});
+        sandboxData.triplets.push_back({4,0,1.0});
+        sandboxData.triplets.push_back({5,0,1.0});
+
+        sandboxData.triplets.push_back({3,1,1.0});
+        sandboxData.triplets.push_back({4,1,1.0});
+        sandboxData.triplets.push_back({5,1,1.0});
+
+        sandboxData.triplets.push_back({1,2,1.0});
+        sandboxData.triplets.push_back({2,2,2.0});
+
+        sandboxData.triplets.push_back({4,2,1.0});
+        sandboxData.triplets.push_back({5,2,2.0});
+
+        sandboxData.triplets.push_back({4,3,1.0});
+        sandboxData.triplets.push_back({5,3,2.0});
+
+        //const auto timeStartCovarianceFast {std::chrono::high_resolution_clock::now()};                                        
+        //const Eigen::MatrixXd covarianceFast = opall::covariance::computeFullCovariance(jacobianData, opall::covariance::computeUsingApproximateMatrixInversionEigen);
+        //const auto timeEndCovarianceFast  {std::chrono::high_resolution_clock::now()};
+
+        std::print("testing on sandbox data\n");
+        const auto timeStartCovarianceFast {std::chrono::high_resolution_clock::now()};                                        
+        const Eigen::MatrixXd covarianceFast = opall::covariance::computeFullCovariance(sandboxData, opall::covariance::computeUsingApproximateMatrixInversionEigen);
+        const auto timeEndCovarianceFast  {std::chrono::high_resolution_clock::now()};
+        
+        std::chrono::duration<double, std::milli> durationCovarianceFast {timeEndCovarianceFast - timeStartCovarianceFast};
+        std::print("duration of fast covariance matrix computation [ms]: {}\n", durationCovarianceFast);
+
+
         const auto parameterBlockDataContainer{optimizationProblem.getParameterBlockData()};
 
         //std::print("parameter block data:\n");
@@ -149,6 +187,9 @@ int main(int argc, char **argv)
         }
 
         const auto covarianceMatricesForPosition = opall::covariance::getSubmatrices(covarianceSubmatricesData, covariance);
+        //const auto covarianceMatricesForPositionFast = opall::covariance::getSubmatrices(covarianceSubmatricesData, covarianceFast);
+
+
 
         std::cout <<"covariance matrices from full covariance:\n";
         for (const auto& covMatrix: covarianceMatricesForPosition)
@@ -159,6 +200,16 @@ int main(int argc, char **argv)
                 std::cout << covMatrix.value() << "\n";
             }
         }
+
+        //std::cout <<"covariance matrices from full fast covariance:\n";
+        //for (const auto& covMatrix: covarianceMatricesForPositionFast)
+        //{
+        //    std::cout <<"covariance matrix:\n";
+        //    if (covMatrix.has_value() )
+        //    {
+        //        std::cout << covMatrix.value() << "\n";
+        //    }
+        //}
 
         opall::Problem::CovarianceBlockData covarianceBlockData;
         covarianceBlockData.parameterBlockAddresses.reserve(optimizationDataContainer.posesContainer.size());

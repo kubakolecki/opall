@@ -9,5 +9,7 @@ namespace opall::covariance
     Eigen::MatrixXd computeFullCovariance(const SparseJacobianData& jacobianData, FullCovarianceComputer fullCovarianceComputer);
 
     Eigen::MatrixXd computeUsingNaiveMatrixInversion(const SparseJacobianData& jacobianData);
+    Eigen::MatrixXd computeUsingApproximateMatrixInversionEigen(const SparseJacobianData& jacobianData);
+    //Eigen::MatrixXd computeUsingApproximateMatrixInversionCublas(const SparseJacobianData& jacobianData);
 
 }
