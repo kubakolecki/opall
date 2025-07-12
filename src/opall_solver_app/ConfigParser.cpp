@@ -160,6 +160,8 @@ ConfigParser::ConfigParser()
 
 opall_solver_app::Config ConfigParser::parseFile(std::filesystem::path path)
 {
+    //std::println("path to config file: {}", path.string());
+    
     if (!std::filesystem::exists(path))
     {
         throw std::invalid_argument("Fatal Error. Config file does not esist!");

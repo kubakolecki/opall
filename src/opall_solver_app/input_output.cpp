@@ -105,6 +105,7 @@ struct overloaded : Ts...
 Point3dWithId tryParsePointObservationData(const std::vector<std::string> &pointEntries)
 {
     const auto numberOfEntries{pointEntries.size()};
+    const auto standardDeviationIsUsed = numberOfEntries==8;
 
     if (numberOfEntries != 8 && numberOfEntries != 14)
     {
@@ -150,7 +151,7 @@ Point3dWithId tryParsePointObservationData(const std::vector<std::string> &point
         }
         else
         {
-            if (value <= 0.0) [[unlikely]]
+            if (value <= 0.0 && standardDeviationIsUsed) [[unlikely]]
             {
                 throw std::invalid_argument("Error. Point observation uncertainty must be > 0, while found: " + std::to_string(value));
             }
@@ -242,6 +243,8 @@ opall::PointObservationsContainer opall_solver_app::readPointObservations(const 
     {
         throw std::invalid_argument("Fatal Error. File with point observations does not exist!");
     }
+
+    //std::println("path to measurement file: {}", pathToFile.string());
 
     auto file{std::ifstream{pathToFile}};
     std::string header;

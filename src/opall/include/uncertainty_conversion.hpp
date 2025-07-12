@@ -2,7 +2,6 @@
 
 #include <Eigen/Dense>
 #include <variant>
-#include <iostream> //TODO: remove when not needed
 
 #include "opall/data_types.hpp"
 
@@ -26,7 +25,6 @@ uncertainty3d::SquareRootInformationMatrix computeSqareRootInformation(const unc
                            return squareRootInformationMatrix;
                        },
                        [](const uncertainty3d::CovarianceMatrix &covarianceMatrix) {
-                           std::cout <<"computing square root information matrix from covariance matrix...\n";
                            Eigen::LLT<Eigen::Matrix<double, 3, 3, Eigen::RowMajor>> choleskyDecomposition(covarianceMatrix.matrix);
                            Eigen::Matrix<double, 3, 3, Eigen::RowMajor> informationMatrix{choleskyDecomposition.matrixL()};
                            Eigen::Matrix<double, 3, 3, Eigen::RowMajor> squareRootInformationMatrix{informationMatrix.inverse()};

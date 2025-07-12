@@ -31,14 +31,23 @@ int main(int argc, char **argv)
     {
         std::print("Running {}\n", appName);
         commandLineParameters.parseParameters(argc, argv);
+
         preprocessCommandLineParameters(commandLineParameters);
         if (!checkIfContinueProcessing(commandLineParameters))
         {
             return EXIT_SUCCESS;
         }
         opall_solver_app::ConfigParser configParser;
-        const auto config{configParser.parseFile(commandLineParameters.getValueOrEmptyString("config"))};
+        const auto config{configParser.parseFile(std::filesystem::path(commandLineParameters.getValueOrEmptyString("config")))};
         opall::optimization_data_container::OptimizationDataContainer optimizationDataContainer;
+
+        auto measurementPath = commandLineParameters.getValueOrEmptyString("measurements"s);
+        auto configPath = commandLineParameters.getValueOrEmptyString("config"s);
+
+        //std::print("measurement file: {}\n", measurementPath);
+        //std::print("config file: {}\n", configPath);
+
+
         optimizationDataContainer.pointObservationContainer =
             opall_solver_app::readPointObservations(commandLineParameters.getValueOrEmptyString("measurements"s));
         if (commandLineParameters.wasLoaded("poses"s))
@@ -87,9 +96,10 @@ int main(int argc, char **argv)
                                           std::filesystem::path("report.txt"s),
                                       reportData, config.reportConfig);
     }
-    catch (std::exception e)
+    catch (const std::exception& e)
     {
-        std::print("{:s}\n", e.what());
+        const auto exceptionInfo{std::string{e.what()}};
+        std::print("\nException: {}\n", exceptionInfo);
         std::print("Exiting with fatal error.\n");
         return EXIT_FAILURE;
     }
