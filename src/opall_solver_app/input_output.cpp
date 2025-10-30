@@ -333,13 +333,20 @@ void opall_solver_app::printReport(const std::filesystem::path pathToFile, const
         file << "Residuals:\n";
         printResiduals(reportData.getResiduals().value().get(), file, ',');
     }
+
+    file<<"\n";
+    file << "Optimized landmarks:\n";
+    file << "pointId,x,y,z\n";
+    printPoints(reportData.getOptimizationDataContainer().pointContainer, file, ',', 6);
 }
 
 void opall_solver_app::printResiduals(const opall::ResidualContainer &residualContainer, std::ostream &outputStream, char separator)
 {
     for (const auto& [constFunctionIdentifier, evaluationResult]: residualContainer)
     {
-        outputStream << constFunctionIdentifier.name;
+        outputStream << constFunctionIdentifier.name <<separator;
+        outputStream << constFunctionIdentifier.details1 <<separator;
+        outputStream << constFunctionIdentifier.details2;
         const auto numOfResiduals{evaluationResult.values.rows() };
         for (auto i{0}; i<numOfResiduals; ++i)
         {
