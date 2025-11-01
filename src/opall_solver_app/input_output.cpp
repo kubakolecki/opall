@@ -330,7 +330,7 @@ void opall_solver_app::printReport(const std::filesystem::path pathToFile, const
 
     if (reportConfig.printResiduals && reportData.getResiduals().has_value())
     {
-        file << "Residuals:\n";
+        file << "Residuals (sorted):\n";
         printResiduals(reportData.getResiduals().value().get(), file, ',');
     }
 
@@ -342,7 +342,14 @@ void opall_solver_app::printReport(const std::filesystem::path pathToFile, const
 
 void opall_solver_app::printResiduals(const opall::ResidualContainer &residualContainer, std::ostream &outputStream, char separator)
 {
-    for (const auto& [constFunctionIdentifier, evaluationResult]: residualContainer)
+    auto residualContainerSorted = residualContainer;
+    std::ranges::sort(residualContainerSorted,
+                      [](const auto &residual1, const auto &residual2) {
+                         const auto & [id1, eval1] = residual1;
+                         const auto & [id2, eval2] = residual2;
+                         return eval1.values.norm() > eval2.values.norm(); });
+    
+    for (const auto& [constFunctionIdentifier, evaluationResult]: residualContainerSorted)
     {
         outputStream << constFunctionIdentifier.name <<separator;
         outputStream << constFunctionIdentifier.details1 <<separator;
